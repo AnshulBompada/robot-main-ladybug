@@ -15,6 +15,8 @@ public class Intake extends SubsystemBase {
   
   public Intake() {
     intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
+    
+    intakeMotor.setSmartCurrentLimit(20); // if stalling, set to 30 amps
   }
 
   public void configMotor(CANSparkMax motor){

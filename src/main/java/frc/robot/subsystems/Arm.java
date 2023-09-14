@@ -30,11 +30,8 @@ public class Arm extends SubsystemBase {
         rightArmMotor.setIdleMode(IdleMode.kBrake);
         leftArmMotor.setIdleMode(IdleMode.kBrake);
 
-        rightArmMotor.setSmartCurrentLimit(60);
-        leftArmMotor.setSmartCurrentLimit(60);
-
-        rightArmMotor.setSecondaryCurrentLimit(60);
-        leftArmMotor.setSecondaryCurrentLimit(60);
+        rightArmMotor.setSmartCurrentLimit(40);
+        leftArmMotor.setSmartCurrentLimit(40); // if stalling, set to 50 amps
     }
 
 
