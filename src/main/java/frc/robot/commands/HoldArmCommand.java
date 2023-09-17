@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.GlobalVars;
 //import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
+import frc.robot.Constants.ArmConstants;
 
 public class HoldArmCommand extends CommandBase {
 
@@ -39,7 +40,7 @@ public class HoldArmCommand extends CommandBase {
     public void execute() {
       if(GlobalVars.shouldHoldArm){
         double calc = FF.calculate(
-          Math.toRadians(robotArm.getPosition() - 91.0), 
+          Math.toRadians(robotArm.getPosition() - ArmConstants.ARM_PARALLEL_TO_GROUND), // -91.0 = arm parallel to ground
           Math.toRadians(robotArm.getVelocity()) / 12);
 
           robotArm.armSpeed(calc);  

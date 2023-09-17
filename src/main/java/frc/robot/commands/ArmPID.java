@@ -8,6 +8,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.GlobalVars;
 import frc.robot.subsystems.Arm;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmPID extends CommandBase {
 
@@ -48,13 +49,13 @@ public class ArmPID extends CommandBase {
       // kv = ArmConstants.kV;
       // ka = ArmConstants.kA;
 
-      armVelocity = 500;
-      armAcceleration = 200;
+      armVelocity = ArmConstants.ARM_VELOCITY;
+      armAcceleration = ArmConstants.ARM_ACCELERATION;
 
       pid = new ProfiledPIDController(kP, kI, kD, new TrapezoidProfile.Constraints(armVelocity, armAcceleration));
       // FF = new ArmFeedforward(ks, kg, kv, ka);
 
-      pid.setTolerance(2);
+      pid.setTolerance(ArmConstants.SET_TOLERANCE);
       // pid.enableContinuousInput(0, 360);
 
       pid.reset(robotArm.getPosition());

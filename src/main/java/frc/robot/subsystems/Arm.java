@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import frc.robot.Constants;
 
 //import frc.robot.Constants.ArmConstants;
 
@@ -20,8 +21,8 @@ public class Arm extends SubsystemBase {
     private CANSparkMax rightArmMotor;
 
     public Arm(){
-        leftArmMotor = new CANSparkMax(12, MotorType.kBrushless);
-        rightArmMotor = new CANSparkMax(11, MotorType.kBrushless);
+        leftArmMotor = new CANSparkMax(Constants.ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
+        rightArmMotor = new CANSparkMax(Constants.ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
 
         leftArmMotor.setInverted(false);
 
@@ -30,8 +31,8 @@ public class Arm extends SubsystemBase {
         rightArmMotor.setIdleMode(IdleMode.kBrake);
         leftArmMotor.setIdleMode(IdleMode.kBrake);
 
-        rightArmMotor.setSmartCurrentLimit(40);
-        leftArmMotor.setSmartCurrentLimit(40); // if stalling, set to 50 amps
+        rightArmMotor.setSmartCurrentLimit(Constants.ArmConstants.RIGHT_ARM_CURRENT_LIMIT);
+        leftArmMotor.setSmartCurrentLimit(Constants.ArmConstants.LEFT_ARM_CURRENT_LIMIT); // if stalling, set to 50 amps
     }
 
 

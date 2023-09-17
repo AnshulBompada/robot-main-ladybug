@@ -17,13 +17,21 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class IntakeConstants {
-    public static final int INTAKE_ID = 5;
+    public static final int INTAKE_ID = 20;
     public static final double INTAKE_SPEED = 0.5;
+    public static final int CURRENT_LIMIT = 20;
   }
 
   public static class ArmConstants {
-    public static final int ARM_ONE_ID = 12;
-    public static final int ARM_TWO_ID = 11;
+    public static final int LEFT_ARM_ID = 10;
+    public static final int RIGHT_ARM_ID = 11;
+    public static final int LEFT_ARM_CURRENT_LIMIT = 40;
+    public static final int RIGHT_ARM_CURRENT_LIMIT = 40;
+    public static final double ARM_PARALLEL_TO_GROUND = 91.0;
+    public static final int SET_TOLERANCE = 2;
+    public static final int ARM_VELOCITY = 500;
+    public static final int ARM_ACCELERATION = 200;
+  
 
     // public static final double kP = 0.007;
     // public static final double kI = 0.0;
@@ -44,9 +52,16 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    public static final int NEO_ONE_ID = 1;
-    public static final int NEO_TWO_ID = 2;
-    public static final int NEO_THREE_ID = 3;
-    public static final int NEO_FOUR_ID = 4;
+    public static final int FRONT_RIGHT_ID = 2;
+    public static final int BACK_RIGHT_ID = 3;
+    public static final int FRONT_LEFT_ID = 4;
+    public static final int BACK_LEFT_ID = 5;
+    public static final int CURRENT_LIMIT = 40;
+  }
+
+  public static class CubeConstants {
+    public static final double CUBE_IN_SPEED = 0.4;
+    public static final double CUBE_OUT_SPEED = -1;
+
   }
 }

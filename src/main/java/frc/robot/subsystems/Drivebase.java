@@ -10,6 +10,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants.DriveConstants;;
+
 public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
 
@@ -20,10 +22,10 @@ public class Drivebase extends SubsystemBase {
   private DifferentialDrive drive;
 
   public Drivebase() {
-  frontLeft = new CANSparkMax(3, MotorType.kBrushless);
-  frontRight = new CANSparkMax(1, MotorType.kBrushless);
-  backLeft = new CANSparkMax(4, MotorType.kBrushless);
-  backRight = new CANSparkMax(2, MotorType.kBrushless);
+  frontLeft = new CANSparkMax(DriveConstants.FRONT_LEFT_ID, MotorType.kBrushless);
+  frontRight = new CANSparkMax(DriveConstants.FRONT_RIGHT_ID, MotorType.kBrushless);
+  backLeft = new CANSparkMax(DriveConstants.BACK_LEFT_ID, MotorType.kBrushless);
+  backRight = new CANSparkMax(DriveConstants.BACK_RIGHT_ID, MotorType.kBrushless);
 
   //configureMotors(frontLeft);
   //configureMotors(frontRight);
@@ -41,7 +43,7 @@ public class Drivebase extends SubsystemBase {
 
   public void configureMotors(CANSparkMax motor){
     motor.clearFaults();
-    motor.setSmartCurrentLimit(40);
+    motor.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
     motor.burnFlash();
   }
 
