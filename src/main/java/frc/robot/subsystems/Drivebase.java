@@ -27,10 +27,11 @@ public class Drivebase extends SubsystemBase {
   backLeft = new CANSparkMax(DriveConstants.BACK_LEFT_ID, MotorType.kBrushless);
   backRight = new CANSparkMax(DriveConstants.BACK_RIGHT_ID, MotorType.kBrushless);
 
-  //configureMotors(frontLeft);
-  //configureMotors(frontRight);
-  //configureMotors(backLeft);
-  //configureMotors(backRight);
+  configureMotors(frontLeft);
+  configureMotors(frontRight);
+  configureMotors(backLeft);
+  configureMotors(backRight);
+  
 
   frontLeft.setInverted(false);
   backLeft.setInverted(false);
@@ -42,9 +43,9 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void configureMotors(CANSparkMax motor){
-    motor.clearFaults();
+    //motor.clearFaults();
     motor.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
-    motor.burnFlash();
+    //motor.burnFlash();
   }
 
   public void arcadeDrive (double speed, double rotation) {
