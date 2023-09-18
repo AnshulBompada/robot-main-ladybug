@@ -10,19 +10,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 
 public class DefaultDrive extends CommandBase {
-  /** Creates a new DefaultDrive. */
 private DoubleSupplier speed;
 private DoubleSupplier rotation;
 private Drivebase drive;
 
-
-
   public DefaultDrive(DoubleSupplier speed, DoubleSupplier rotation, Drivebase drive) {
-    // Use addRequirements() here to declare subsystem dependencies.
+    
     this.speed = speed;
     this.rotation = rotation;
     this.drive = drive;
 
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
     
   }

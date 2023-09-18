@@ -27,8 +27,11 @@ public final class Constants {
 
   public static class IntakeConstants {
     public static final int INTAKE_ID = 20;
-    public static final double INTAKE_SPEED = 0.5;
     public static final int CURRENT_LIMIT = 20; //if stalling -> 30 amps MAX
+    public static final double INTAKE_SPEED = 0.5;
+    public static final double CUBE_IN_SPEED = 0.4;
+    public static final double CUBE_OUT_SPEED = -1;
+    public static final double CUBE_SET_ZERO = 0;
   }
 
   public static class ArmConstants {
@@ -36,9 +39,9 @@ public final class Constants {
     public static final int RIGHT_ARM_ID = 11;
     public static final int ARM_CURRENT_LIMIT = 40; //if stalling -> 50 amps MAX
     public static final double ARM_PARALLEL_TO_GROUND = 91.0;
-    public static final int SET_TOLERANCE = 2;
-    public static final int ARM_VELOCITY = 500;
-    public static final int ARM_ACCELERATION = 200;
+    public static final double SET_TOLERANCE = 2;
+    public static final double ARM_VELOCITY = 500;
+    public static final double ARM_ACCELERATION = 200;
 
     // public static final double kP = 0.007;
     // public static final double kI = 0.0;
@@ -64,10 +67,5 @@ public final class Constants {
     public static final double AUTON_OUT_TAKE_WAIT = 1;
     public static final double AUTON_SCORE_POS = 45;
     public static final double AUTON_IDLE_POS = 0;
-  }
-
-  public static class CubeConstants {
-    public static final double CUBE_IN_SPEED = 0.4;
-    public static final double CUBE_OUT_SPEED = -1;
   }
 }

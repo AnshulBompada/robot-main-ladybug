@@ -6,11 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.Constants.DriveConstants;;
+import frc.robot.Constants.DriveConstants;
 
 public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
@@ -31,12 +29,9 @@ public class Drivebase extends SubsystemBase {
   configureMotors(frontRight);
   configureMotors(backLeft);
   configureMotors(backRight);
-
-  frontLeft.setInverted(false);
-  backLeft.setInverted(false);
   
-  backLeft.follow(frontLeft);
-  backRight.follow(frontRight);
+  backLeft.follow(frontLeft, false);
+  backRight.follow(frontRight, false);
 
   drive = new DifferentialDrive(frontLeft, frontRight);
   }
@@ -57,7 +52,6 @@ public class Drivebase extends SubsystemBase {
     {
       rotation = 0.0;
     }
-    
 
     drive.arcadeDrive(rotation, speed);
     drive.feed();

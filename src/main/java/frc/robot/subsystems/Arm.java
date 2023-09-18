@@ -4,15 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
-import frc.robot.Constants;
-
-//import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ArmConstants;
 
 
 public class Arm extends SubsystemBase {
@@ -21,20 +19,21 @@ public class Arm extends SubsystemBase {
     private CANSparkMax rightArmMotor;
 
     public Arm(){
-        leftArmMotor = new CANSparkMax(Constants.ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
-        rightArmMotor = new CANSparkMax(Constants.ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
-
-        leftArmMotor.setInverted(false);
+        leftArmMotor = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
+        rightArmMotor = new CANSparkMax(ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
 
         rightArmMotor.follow(leftArmMotor, true);
 
-        rightArmMotor.setIdleMode(IdleMode.kBrake);
-        leftArmMotor.setIdleMode(IdleMode.kBrake);
-
-        rightArmMotor.setSmartCurrentLimit(Constants.ArmConstants.ARM_CURRENT_LIMIT);
-        leftArmMotor.setSmartCurrentLimit(Constants.ArmConstants.ARM_CURRENT_LIMIT); // if stalling, set to 50 amps
+        configureMotors(leftArmMotor);
+        configureMotors(rightArmMotor);
     }
 
+    public void configureMotors(CANSparkMax motor) {
+        motor.setIdleMode(IdleMode.kBrake);
+        motor.setSmartCurrentLimit(ArmConstants.ARM_CURRENT_LIMIT);
+        //motor.burnFlash();
+        //motor.clearFaults();
+    }
 
     // Setting soft limit
     public void armSpeed(double speed) {
@@ -51,7 +50,6 @@ public class Arm extends SubsystemBase {
     public boolean isInBound(double speed){
         if((getPosition() < 3) && (speed < 0)) return false;
         if ((getPosition() > 113) && (speed > 0)) return false;
-        
         return true;
     }
 
@@ -59,14 +57,13 @@ public class Arm extends SubsystemBase {
         return ((leftArmMotor.getEncoder().getPosition()) * 360.0) / 16.0;
     }
 
-    // public double getXAxisPosition() {
-    //     return ArmConstants.To360Scope(getPosition());
-    // }
-
     public double getVelocity(){
         return leftArmMotor.getEncoder().getVelocity()  * 2 * Math.PI;
     }
-
+    
+    // public double getXAxisPosition() {
+    //     return ArmConstants.To360Scope(getPosition());
+    // }
     // public DoubleSupplier ffCalc() {
     //     return () -> -0.1 * Math.cos(Math.toRadians(getXAxisPosition()));
     // }
