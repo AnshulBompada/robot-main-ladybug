@@ -25,16 +25,7 @@ public class Intake extends SubsystemBase {
   public void configMotor(CANSparkMax motor){
     motor.restoreFactoryDefaults();
     motor.clearFaults();
-
   }
-
-   public void coneIn(){ 
-    intakeMotor.set(-0.4);
-  }
-
-  public void coneOut(){
-    intakeMotor.set(1);
-  } 
 
   public void cubeIn(){
     intakeMotor.set(CubeConstants.CUBE_IN_SPEED);

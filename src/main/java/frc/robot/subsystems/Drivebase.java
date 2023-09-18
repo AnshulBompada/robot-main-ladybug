@@ -31,7 +31,6 @@ public class Drivebase extends SubsystemBase {
   configureMotors(frontRight);
   configureMotors(backLeft);
   configureMotors(backRight);
-  
 
   frontLeft.setInverted(false);
   backLeft.setInverted(false);
@@ -43,9 +42,9 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void configureMotors(CANSparkMax motor){
-    //motor.clearFaults();
-    motor.setSmartCurrentLimit(DriveConstants.CURRENT_LIMIT);
+    motor.setSmartCurrentLimit(DriveConstants.DRIVE_CURRENT_LIMIT);
     //motor.burnFlash();
+    //motor.clearFaults();
   }
 
   public void arcadeDrive (double speed, double rotation) {

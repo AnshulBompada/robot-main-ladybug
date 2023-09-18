@@ -64,7 +64,6 @@ public class RobotContainer {
     autonChooser.setDefaultOption("SCORE", autonManager.autonomousCmd(4));
     
     configureBindings();
-    
   }
 
   
@@ -93,13 +92,9 @@ public class RobotContainer {
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));
-    operatorController.x().onTrue(new InstantCommand(() -> intake.coneIn()));
-    operatorController.y().onTrue(new InstantCommand(() -> intake.coneOut()));
 
     operatorController.a().onFalse(new InstantCommand(() -> intake.setZero()));
     operatorController.b().onFalse(new InstantCommand(() -> intake.setZero()));
-    operatorController.x().onFalse(new InstantCommand(() -> intake.setZero()));
-    operatorController.y().onFalse(new InstantCommand(() -> intake.setZero()));
 
     // operatorController.a().onTrue(new ArmPID(arm, 3));
     // operatorController.b().onTrue(new ArmPID(arm, 90));
