@@ -65,7 +65,7 @@ public class AutonManager {
               driveBack(1.3)
             );
 
-            // ------ JUST SHOOT ------
+            // ------ SHOOT ------
             case 4:
             return new SequentialCommandGroup (
               // ARM PLACE 

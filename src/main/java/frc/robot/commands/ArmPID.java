@@ -16,7 +16,7 @@ public class ArmPID extends CommandBase {
     
     private Arm robotArm;
     private ProfiledPIDController pid;
-//    private ArmFeedforward FF;
+    //private ArmFeedforward FF;
     private double setpoint;
 
     private double kP;
@@ -32,6 +32,7 @@ public class ArmPID extends CommandBase {
 
     @Override
     public void initialize() {
+      //Add to constants file or no?
       kP = 0.018;
       kI = 0;
       kD = 0;
