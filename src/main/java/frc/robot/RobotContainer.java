@@ -36,6 +36,7 @@ public class RobotContainer {
   private SendableChooser<Command> autonChooser;
 
 
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -55,7 +56,7 @@ public class RobotContainer {
       drive
     ));
 
-    // arm.setDefaultCommand(new HoldArmCommand(arm));
+    arm.setDefaultCommand(new HoldArmCommand(arm));
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
     autonChooser.addOption("SCORE MOBILITY, CABLE SIDE", autonManager.autonomousCmd(1));
@@ -68,27 +69,25 @@ public class RobotContainer {
 
   
   private void configureBindings() {
-    operatorController.rightTrigger()
-      .whileTrue(new InstantCommand(() -> {
-                                            arm.armSpeed(0.25);
-                                            stopArmHold();
-                                          }))
-      .onFalse(new InstantCommand(() -> beginArmHold()));
-
     operatorController.leftTrigger()
       .whileTrue(new InstantCommand(() -> {
-                                            arm.armSpeed(-0.4);
-                                            stopArmHold();
+                                            arm.armSpeed(0.1);
                                           }))
-      .onFalse(new InstantCommand(() -> beginArmHold()));
+      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
+
+    operatorController.rightTrigger()
+      .whileTrue(new InstantCommand(() -> {
+                                            arm.armSpeed(-0.25);
+                                          }))
+      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
 
     operatorController.leftBumper()
       .whileTrue(new ArmPID(arm, 90.0))
-      .onFalse(new InstantCommand(() -> beginArmHold()));
+      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
    
     operatorController.rightBumper()
       .whileTrue(new ArmPID(arm, 5.0))
-      .onFalse(new InstantCommand(() -> beginArmHold()));
+      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));
@@ -98,18 +97,6 @@ public class RobotContainer {
 
     // operatorController.a().onTrue(new ArmPID(arm, 3));
     // operatorController.b().onTrue(new ArmPID(arm, 90));
-  }
-
-  private void stopArmHold(){
-    System.out.println("ARM HOLD STOPPED");
-    GlobalVars.shouldHoldArm = false;
-  }
-
-
-  private void beginArmHold(){
-    System.out.println("ARM HOLD START");
-    arm.armSpeed(0.0);
-    GlobalVars.shouldHoldArm = true;
   }
 
   public Arm getRobotArm(){

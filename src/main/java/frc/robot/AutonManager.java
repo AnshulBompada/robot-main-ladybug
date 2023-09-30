@@ -90,7 +90,7 @@ public class AutonManager {
     private Command driveBack(double time){
       return new DefaultDrive(() -> AutonConstants.AUTON_ARM_SPEED_BWD, () -> 0.0, robotDrive).withTimeout(time);
   }
-  //not used until 2-pc auton is created
+  //not used until 2-pc/1&1/2pc auton is created
   private Command driveFront(double time){
       return new DefaultDrive(() -> AutonConstants.AUTON_ARM_SPEED_FWD, () -> 0.0, robotDrive).withTimeout(time);
   }
@@ -103,7 +103,7 @@ public class AutonManager {
     return new InstantCommand(()-> robotIntake.cubeOut());
   }
 
-  // not used until 2-pc auton is created
+  // not used until 2-pc/1&1/2pc auton is created
   private Command cubeInConeOut(){
     return new InstantCommand(()-> robotIntake.cubeIn());
   }

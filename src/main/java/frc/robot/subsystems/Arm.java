@@ -18,6 +18,8 @@ public class Arm extends SubsystemBase {
     private CANSparkMax leftArmMotor;
     private CANSparkMax rightArmMotor;
 
+    public double lastSetpoint;
+
     public Arm(){
         leftArmMotor = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
         rightArmMotor = new CANSparkMax(ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
@@ -26,6 +28,8 @@ public class Arm extends SubsystemBase {
 
         configureMotors(leftArmMotor);
         configureMotors(rightArmMotor);
+
+        lastSetpoint = getPosition();
     }
 
     public void configureMotors(CANSparkMax motor) {
@@ -74,6 +78,8 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Encoder Value", getPosition());
         // SmartDashboard.putNumber("Offset Encoder Value", ArmConstants.To360Scope(getPosition()));
         SmartDashboard.putNumber("Arm Speeed", rightArmMotor.get());
+        SmartDashboard.putNumber("Right Arm Current", rightArmMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Left Arm Current", leftArmMotor.getOutputCurrent());
 
     }
 

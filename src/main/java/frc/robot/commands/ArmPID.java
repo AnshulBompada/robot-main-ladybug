@@ -6,7 +6,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.GlobalVars;
 import frc.robot.subsystems.Arm;
 import frc.robot.Constants.ArmConstants;
 
@@ -26,7 +25,6 @@ public class ArmPID extends CommandBase {
     public ArmPID(Arm robotArm, double setpoint) {
         this.robotArm = robotArm;
         this.setpoint = setpoint;
-        GlobalVars.shouldHoldArm = false;
         SendableRegistry.setName(pid, "ArmSubsystem", "PID");
     }
 
@@ -50,7 +48,6 @@ public class ArmPID extends CommandBase {
     @Override
     public void execute() {
       double pidCalc = pid.calculate(robotArm.getPosition(), setpoint);
-
       // SmartDashboard.putNumber("Output", pidCalc.getAsDouble());
 
       robotArm.armSpeed(pidCalc);

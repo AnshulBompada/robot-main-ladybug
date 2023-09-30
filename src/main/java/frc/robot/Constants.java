@@ -18,30 +18,30 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    public static final int FRONT_RIGHT_ID = 2;
-    public static final int BACK_RIGHT_ID = 3;
-    public static final int FRONT_LEFT_ID = 4;
-    public static final int BACK_LEFT_ID = 5;
+    public static final int FRONT_RIGHT_ID = 12;
+    public static final int BACK_RIGHT_ID = 14;
+    public static final int FRONT_LEFT_ID = 11;
+    public static final int BACK_LEFT_ID = 13;
     public static final int DRIVE_CURRENT_LIMIT = 40;
   }
 
   public static class IntakeConstants {
-    public static final int INTAKE_ID = 20;
-    public static final int CURRENT_LIMIT = 20; //if stalling -> 30 amps MAX
+    public static final int INTAKE_ID = 31;
+    public static final int CURRENT_LIMIT = 30; //if stalling -> 30 amps MAX
     public static final double INTAKE_SPEED = 0.5;
-    public static final double CUBE_IN_SPEED = 0.4;
-    public static final double CUBE_OUT_SPEED = -1;
+    public static final double CUBE_IN_SPEED = 0.7;
+    public static final double CUBE_OUT_SPEED = -0.8;
     public static final double CUBE_SET_ZERO = 0;
   }
 
   public static class ArmConstants {
-    public static final int LEFT_ARM_ID = 10;
-    public static final int RIGHT_ARM_ID = 11;
-    public static final int ARM_CURRENT_LIMIT = 40; //if stalling -> 50 amps MAX
+    public static final int LEFT_ARM_ID = 21;
+    public static final int RIGHT_ARM_ID = 22;
+    public static final int ARM_CURRENT_LIMIT = 50; //if stalling -> 50 amps MAX
     public static final double ARM_PARALLEL_TO_GROUND = 91.0;
     public static final double SET_TOLERANCE = 2;
-    public static final double ARM_VELOCITY = 500;
-    public static final double ARM_ACCELERATION = 200;
+    public static final double ARM_VELOCITY = 300;
+    public static final double ARM_ACCELERATION = 150;
 
     // public static final double kP = 0.007;
     // public static final double kI = 0.0;
