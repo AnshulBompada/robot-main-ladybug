@@ -24,7 +24,6 @@ public class HoldArmCommand extends CommandBase {
     private double kp;
     private double ki;
     private double kd;
-    private boolean shouldHoldArm;
 
     public HoldArmCommand(Arm robotArm) {
         this.robotArm = robotArm;
@@ -37,25 +36,23 @@ public class HoldArmCommand extends CommandBase {
       kg = -0.1;
       kv = 0;
       ka = 0;
-      kp = 0.04;
-      ki = 0;
-      kd = 0;
+      //kp = 0.04;
+      //ki = 0;
+      //kd = 0;
 
       FF = new ArmFeedforward(ks, kg, kv, ka);
-      PID = new PIDController(kp, ki, kd);
+      //PID = new PIDController(kp, ki, kd);
       
       System.out.println("Command HOLD ARM COMMAND has started");
     }
   
     @Override
     public void execute() {
-      if(shouldHoldArm){
         double calc = FF.calculate(
-          Math.toRadians(robotArm.getPosition() - ArmConstants.ARM_PARALLEL_TO_GROUND), // -91.0 = arm parallel to ground
-          Math.toRadians(robotArm.getVelocity()) / 12);
+        Math.toRadians(robotArm.getPosition() - ArmConstants.ARM_PARALLEL_TO_GROUND), // -91.0 = arm parallel to ground
+        Math.toRadians(robotArm.getVelocity()) / 12);
 
-          robotArm.armSpeed(calc + PID.calculate(robotArm.getPosition(), 90));  
-      }
+        robotArm.armSpeed(calc/* + PID.calculate(robotArm.getPosition(), 90)*/); 
     }
   
     @Override
