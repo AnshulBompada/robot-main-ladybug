@@ -6,8 +6,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.GlobalVars;
 import frc.robot.subsystems.Arm;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmPID extends CommandBase {
 
@@ -22,18 +22,9 @@ public class ArmPID extends CommandBase {
     private double kI; 
     private double kD;
 
-    // private double ks;
-    // private double kg;
-    // private double kv;
-    // private double ka;
-
-    private double armVelocity; 
-    private double armAcceleration;
-
     public ArmPID(Arm robotArm, double setpoint) {
         this.robotArm = robotArm;
         this.setpoint = setpoint;
-        GlobalVars.shouldHoldArm = false;
         SendableRegistry.setName(pid, "ArmSubsystem", "PID");
     }
 
@@ -43,18 +34,10 @@ public class ArmPID extends CommandBase {
       kI = 0;
       kD = 0;
 
-      // ks = ArmConstants.kS;
-      // kg = ArmConstants.kG;
-      // kv = ArmConstants.kV;
-      // ka = ArmConstants.kA;
+      pid = new ProfiledPIDController(kP, kI, kD, new TrapezoidProfile.Constraints(ArmConstants.ARM_VELOCITY, ArmConstants.ARM_ACCELERATION));
+      // FF = new ArmFeedforward(ArmConstants.kS, ArmConstants.kG, ArmConstants.kV, ArmConstants.kA);
 
-      armVelocity = 500;
-      armAcceleration = 200;
-
-      pid = new ProfiledPIDController(kP, kI, kD, new TrapezoidProfile.Constraints(armVelocity, armAcceleration));
-      // FF = new ArmFeedforward(ks, kg, kv, ka);
-
-      pid.setTolerance(2);
+      pid.setTolerance(ArmConstants.SET_TOLERANCE);
       // pid.enableContinuousInput(0, 360);
 
       pid.reset(robotArm.getPosition());
@@ -65,7 +48,6 @@ public class ArmPID extends CommandBase {
     @Override
     public void execute() {
       double pidCalc = pid.calculate(robotArm.getPosition(), setpoint);
-
       // SmartDashboard.putNumber("Output", pidCalc.getAsDouble());
 
       robotArm.armSpeed(pidCalc);

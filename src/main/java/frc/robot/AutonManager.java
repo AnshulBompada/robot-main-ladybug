@@ -9,14 +9,13 @@ import frc.robot.commands.DefaultDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
+import frc.robot.Constants.AutonConstants;
 
 public class AutonManager {
 
     public Drivebase robotDrive;
     public Arm robotArm;
     public Intake robotIntake;
-    private double armSpeedFwd;
-    private double armSpeedBwd;
     
     public AutonManager(Drivebase robotDrive, Arm robotArm, Intake robotIntake) {
         this.robotDrive = robotDrive;
@@ -25,21 +24,16 @@ public class AutonManager {
     }
 
     public Command autonomousCmd(int auton) {
-        armSpeedFwd = 0.5;
-        armSpeedBwd = -0.3;
-
-        double outTakeWait = 1;
-        double scorePos = 45;
 
         switch(auton) {
           // ------ CABLE-SIDE AUTON ------
             case 1:
               return new SequentialCommandGroup (
                 // ARM PLACE 
-                armToPosition(scorePos),
-                coneInCubeOut(),
-                new WaitCommand(outTakeWait),
-                armToPosition(0),
+                armToPosition(AutonConstants.AUTON_SCORE_POS),
+                cubeOut(),
+                new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
+                armToPosition(AutonConstants.AUTON_IDLE_POS),
 
                 // DRIVE BACK
                 driveBack(1.3)
@@ -49,10 +43,10 @@ public class AutonManager {
             case 2:
               return new SequentialCommandGroup (
                 // ARM PLACE 
-                armToPosition(scorePos),
-                coneInCubeOut(),
-                new WaitCommand(outTakeWait),
-                armToPosition(0),
+                armToPosition(AutonConstants.AUTON_SCORE_POS),
+                cubeOut(),
+                new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
+                armToPosition(AutonConstants.AUTON_IDLE_POS),
 
                 // DRIVE BACK
                 driveBack(1.3)
@@ -62,10 +56,10 @@ public class AutonManager {
             case 3:
             return new SequentialCommandGroup (
               // ARM PLACE 
-              armToPosition(scorePos),
-              coneInCubeOut(),
-              new WaitCommand(outTakeWait),
-              armToPosition(0),
+              armToPosition(AutonConstants.AUTON_SCORE_POS),
+              cubeOut(),
+              new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
+              armToPosition(AutonConstants.AUTON_IDLE_POS),
 
               // DRIVE BACK
               driveBack(1.3)
@@ -75,10 +69,10 @@ public class AutonManager {
             case 4:
             return new SequentialCommandGroup (
               // ARM PLACE 
-              armToPosition(scorePos),
-              coneInCubeOut(),
-              new WaitCommand(outTakeWait),
-              armToPosition(0),
+              armToPosition(AutonConstants.AUTON_SCORE_POS),
+              cubeOut(),
+              new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
+              armToPosition(AutonConstants.AUTON_IDLE_POS),
 
               // DRIVE BACK
               driveBack(1.3)
@@ -94,21 +88,22 @@ public class AutonManager {
 
 
     private Command driveBack(double time){
-      return new DefaultDrive(() -> armSpeedBwd, () -> 0.0, robotDrive).withTimeout(time);
+      return new DefaultDrive(() -> AutonConstants.AUTON_ARM_SPEED_BWD, () -> 0.0, robotDrive).withTimeout(time);
   }
-
+  //not used until 2-pc/1&1/2pc auton is created
   private Command driveFront(double time){
-      return new DefaultDrive(() -> armSpeedFwd, () -> 0.0, robotDrive).withTimeout(time);
+      return new DefaultDrive(() -> AutonConstants.AUTON_ARM_SPEED_FWD, () -> 0.0, robotDrive).withTimeout(time);
   }
 
   private Command armToPosition(double pos){
     return new ArmPID(robotArm, pos).withTimeout(1);
   }
 
-  private Command coneInCubeOut(){
-    return new InstantCommand(()-> robotIntake.coneIn());
+  private Command cubeOut(){
+    return new InstantCommand(()-> robotIntake.cubeOut());
   }
 
+  // not used until 2-pc/1&1/2pc auton is created
   private Command cubeInConeOut(){
     return new InstantCommand(()-> robotIntake.cubeIn());
   }

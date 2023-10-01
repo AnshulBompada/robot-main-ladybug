@@ -7,42 +7,34 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
   
   public CANSparkMax intakeMotor;
   
   public Intake() {
-    intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
-    
-    intakeMotor.setSmartCurrentLimit(20); // if stalling, set to 30 amps
+    intakeMotor = new CANSparkMax(IntakeConstants.INTAKE_ID, MotorType.kBrushless);
+    configureMotor(intakeMotor);
   }
 
-  public void configMotor(CANSparkMax motor){
-    motor.restoreFactoryDefaults();
-    motor.clearFaults();
-
-  }
-
-  public void coneIn(){
-    intakeMotor.set(-0.4);
-  }
-
-  public void coneOut(){
-    intakeMotor.set(1);
+  public void configureMotor(CANSparkMax motor){
+    intakeMotor.setSmartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
+    //motor.restoreFactoryDefaults();  ???
+    //motor.burnFlash();
+    //motor.clearFaults();
   }
 
   public void cubeIn(){
-    intakeMotor.set(0.4);
+    intakeMotor.set(IntakeConstants.CUBE_IN_SPEED);
   }
 
   public void cubeOut(){
-    intakeMotor.set(-1);
+    intakeMotor.set(IntakeConstants.CUBE_OUT_SPEED);
   }
 
   public void setZero(){
-    intakeMotor.set(0.0);
+    intakeMotor.set(IntakeConstants.CUBE_SET_ZERO);
   }
   
   @Override
