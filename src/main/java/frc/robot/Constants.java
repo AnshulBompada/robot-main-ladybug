@@ -23,6 +23,7 @@ public final class Constants {
     public static final int FRONT_LEFT_ID = 11;
     public static final int BACK_LEFT_ID = 13;
     public static final int DRIVE_CURRENT_LIMIT = 40;
+    public static final double DEADBAND = 0.1;
   }
 
   public static class IntakeConstants {
@@ -40,15 +41,23 @@ public final class Constants {
     public static final int ARM_CURRENT_LIMIT = 50; //if stalling -> 50 amps MAX
     public static final double ARM_PARALLEL_TO_GROUND = 91.0;
     public static final double SET_TOLERANCE = 2;
-    public static final double ARM_VELOCITY = 300;
-    public static final double ARM_ACCELERATION = 150;
+    public static final double ARM_SPEED_FWD = 0.1;
+    public static final double ARM_SPEED_BWD = -0.25;
+    public static final double ARM_VELOCITY = 350;
+    public static final double ARM_ACCELERATION = 250;
+    public static final double LOWER_BOUND = 3; 
+    public static final double UPPER_BOUND = 110; // originally 113.0
+    public static final double FLOOR_POS = 90.0; 
+    public static final double IDLE_POS = 5.0; 
+    public static final double ARM_GEAR_RATIO = 16.0;
+    //public static final double TOTAL_VOLT_OUTPUT = 12;
 
-    // public static final double kP = 0.007;
+    // public static final double kP = 0.0018;
     // public static final double kI = 0.0;
     // public static final double kD = 0.0;
 
-    // public static final double kS = 0.0;
-    // public static final double kG = - 0.06;
+    // public static final double kS = 0.1;
+    // public static final double kG = - 0.1;
     // public static final double kV = 0.0;
     // public static final double kA = 0.0;
 

@@ -4,7 +4,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -29,7 +30,7 @@ public class Arm extends SubsystemBase {
         configureMotors(leftArmMotor);
         configureMotors(rightArmMotor);
 
-        lastSetpoint = getPosition();
+        lastSetpoint = getPosition().getDegrees();
     }
 
     public void configureMotors(CANSparkMax motor) {
@@ -41,28 +42,24 @@ public class Arm extends SubsystemBase {
 
     // Setting soft limit
     public void armSpeed(double speed) {
-        if(isInBound(speed)){
-            leftArmMotor.set(speed);
-        }
-        else {
-            leftArmMotor.set(0);
-            // System.out.println("Limits working-");
-        }
+        if (isInBound(speed)) leftArmMotor.set(speed);
+        else leftArmMotor.set(0);
         
+        // System.out.println("Limits working-");
     }
 
     public boolean isInBound(double speed){
-        if((getPosition() < 3) && (speed < 0)) return false;
-        if ((getPosition() > 113) && (speed > 0)) return false;
+        if((getPosition().getDegrees() < ArmConstants.LOWER_BOUND) && (speed < 0)) return false;
+        if ((getPosition().getDegrees() > ArmConstants.UPPER_BOUND) && (speed > 0)) return false;
         return true;
     }
 
-    public double getPosition(){
-        return ((leftArmMotor.getEncoder().getPosition()) * 360.0) / 16.0;
+    public Rotation2d getPosition(){
+        return new Rotation2d(Math.toRadians((leftArmMotor.getEncoder().getPosition() * 360.0) / ArmConstants.ARM_GEAR_RATIO));
     }
 
-    public double getVelocity(){
-        return leftArmMotor.getEncoder().getVelocity()  * 2 * Math.PI;
+    public Rotation2d getVelocity(){
+        return new Rotation2d(Units.rotationsPerMinuteToRadiansPerSecond(leftArmMotor.getEncoder().getVelocity()));
     }
     
     // public double getXAxisPosition() {
@@ -75,7 +72,7 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic(){
 
-        SmartDashboard.putNumber("Encoder Value", getPosition());
+        SmartDashboard.putNumber("Encoder Value", getPosition().getDegrees());
         // SmartDashboard.putNumber("Offset Encoder Value", ArmConstants.To360Scope(getPosition()));
         SmartDashboard.putNumber("Arm Speeed", rightArmMotor.get());
         SmartDashboard.putNumber("Right Arm Current", rightArmMotor.getOutputCurrent());

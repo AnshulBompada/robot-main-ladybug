@@ -15,7 +15,6 @@ public class ArmPID extends CommandBase {
     
     private Arm robotArm;
     private ProfiledPIDController pid;
-//    private ArmFeedforward FF;
     private double setpoint;
 
     private double kP;
@@ -30,24 +29,22 @@ public class ArmPID extends CommandBase {
 
     @Override
     public void initialize() {
-      kP = 0.018;
+      kP = 0.025;
       kI = 0;
       kD = 0;
 
       pid = new ProfiledPIDController(kP, kI, kD, new TrapezoidProfile.Constraints(ArmConstants.ARM_VELOCITY, ArmConstants.ARM_ACCELERATION));
-      // FF = new ArmFeedforward(ArmConstants.kS, ArmConstants.kG, ArmConstants.kV, ArmConstants.kA);
 
       pid.setTolerance(ArmConstants.SET_TOLERANCE);
-      // pid.enableContinuousInput(0, 360);
 
-      pid.reset(robotArm.getPosition());
+      pid.reset(robotArm.getPosition().getDegrees());
 
       System.out.println("Command TELEOP ARM ALIGN has started");
     }
   
     @Override
     public void execute() {
-      double pidCalc = pid.calculate(robotArm.getPosition(), setpoint);
+      double pidCalc = pid.calculate(robotArm.getPosition().getDegrees(), setpoint);
       // SmartDashboard.putNumber("Output", pidCalc.getAsDouble());
 
       robotArm.armSpeed(pidCalc);

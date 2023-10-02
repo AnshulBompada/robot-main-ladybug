@@ -1,13 +1,13 @@
 
 package frc.robot.commands;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
+//import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 //import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.ArmPID;
+//import frc.robot.commands.ArmPID;
 
 public class HoldArmCommand extends CommandBase {
 
@@ -16,14 +16,14 @@ public class HoldArmCommand extends CommandBase {
     private Arm robotArm;
 
     private ArmFeedforward FF;
-    private PIDController PID;
+    //private PIDController PID;
     private double ks;
     private double kg;
     private double kv;
     private double ka;
-    private double kp;
-    private double ki;
-    private double kd;
+    //private double kp;
+    //private double ki;
+    //private double kd;
 
     public HoldArmCommand(Arm robotArm) {
         this.robotArm = robotArm;
@@ -32,8 +32,8 @@ public class HoldArmCommand extends CommandBase {
 
     @Override
     public void initialize() {
-      ks = 0.1;
-      kg = -0.1;
+      ks = 0;
+      kg = -0.075;
       kv = 0;
       ka = 0;
       //kp = 0.04;
@@ -49,8 +49,8 @@ public class HoldArmCommand extends CommandBase {
     @Override
     public void execute() {
         double calc = FF.calculate(
-        Math.toRadians(robotArm.getPosition() - ArmConstants.ARM_PARALLEL_TO_GROUND), // -91.0 = arm parallel to ground
-        Math.toRadians(robotArm.getVelocity()) / 12);
+          Math.toRadians(robotArm.getPosition().getDegrees() - ArmConstants.ARM_PARALLEL_TO_GROUND),
+          robotArm.getVelocity().getRadians() / 12);
 
         robotArm.armSpeed(calc/* + PID.calculate(robotArm.getPosition(), 90)*/); 
     }

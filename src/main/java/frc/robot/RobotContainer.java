@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ArmPID;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.HoldArmCommand;
@@ -70,38 +71,32 @@ public class RobotContainer {
   
   private void configureBindings() {
     operatorController.leftTrigger()
-      .whileTrue(new InstantCommand(() -> {
-                                            arm.armSpeed(0.1);
-                                          }))
-      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
+      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_FWD); arm.getDefaultCommand().end(true);}))
+      .onFalse(new InstantCommand(() -> { arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
 
     operatorController.rightTrigger()
-      .whileTrue(new InstantCommand(() -> {
-                                            arm.armSpeed(-0.25);
-                                          }))
-      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
+      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_BWD); arm.getDefaultCommand().end(true);}))
+      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
 
     operatorController.leftBumper()
-      .whileTrue(new ArmPID(arm, 90.0))
-      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
+      .whileTrue(new ArmPID(arm, ArmConstants.FLOOR_POS))
+      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
    
     operatorController.rightBumper()
-      .whileTrue(new ArmPID(arm, 5.0))
-      .onFalse(new InstantCommand(() -> { arm.armSpeed(0); arm.lastSetpoint = arm.getPosition(); }));
+      .whileTrue(new ArmPID(arm, ArmConstants.IDLE_POS))
+      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));
 
     operatorController.a().onFalse(new InstantCommand(() -> intake.setZero()));
     operatorController.b().onFalse(new InstantCommand(() -> intake.setZero()));
-
-    // operatorController.a().onTrue(new ArmPID(arm, 3));
-    // operatorController.b().onTrue(new ArmPID(arm, 90));
   }
 
   public Arm getRobotArm(){
     return arm;
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
