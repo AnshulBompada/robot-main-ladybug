@@ -96,7 +96,8 @@ public class AutonManager {
   }
 
   private Command armToPosition(double pos){
-    return new HoldArmCommand(robotArm, pos).withTimeout(1);
+    return new HoldArmCommand(robotArm, 
+    () -> pos).withTimeout(1);
   }
 
   private Command cubeOut(){

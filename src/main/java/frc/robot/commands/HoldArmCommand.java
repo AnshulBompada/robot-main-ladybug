@@ -1,8 +1,11 @@
 
 package frc.robot.commands;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.util.sendable.SendableRegistry;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,7 +22,7 @@ public class HoldArmCommand extends CommandBase {
 
     private ArmFeedforward FF;
     private ProfiledPIDController PID;
-    private double setpoint;
+    private DoubleSupplier setpoint;
     private double kS;
     private double kG;
     private double kV;
@@ -28,7 +31,7 @@ public class HoldArmCommand extends CommandBase {
     private double kI;
     private double kD;
 
-    public HoldArmCommand(Arm robotArm, double setpoint) {
+    public HoldArmCommand(Arm robotArm, DoubleSupplier setpoint) {
         this.robotArm = robotArm;
         this.setpoint = setpoint;
         addRequirements(robotArm);
@@ -57,7 +60,7 @@ public class HoldArmCommand extends CommandBase {
   
     @Override
     public void execute() {
-        double PIDCalc = PID.calculate(robotArm.getPosition().getDegrees(), setpoint);
+        double PIDCalc = PID.calculate(robotArm.getPosition().getDegrees(), setpoint.getAsDouble());
 
         double calc = FF.calculate(
           Math.toRadians(robotArm.getPosition().getDegrees() - ArmConstants.ARM_PARALLEL_TO_GROUND),

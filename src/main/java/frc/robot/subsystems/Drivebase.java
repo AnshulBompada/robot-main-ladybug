@@ -44,7 +44,7 @@ public class Drivebase extends SubsystemBase {
     //motor.clearFaults();
   }
 
-  /* Fix the speed and rotation because it's swapped (try changing the invrsion of the motors) */
+  /* Fix the speed and rotation because it's swapped (try changing the inversion of the motors) */
   public void arcadeDrive (double speed, double rotation) {
     
     if(Math.abs(speed) < DriveConstants.DEADBAND)
@@ -56,7 +56,7 @@ public class Drivebase extends SubsystemBase {
       rotation = 0.0;
     }
 
-    drive.arcadeDrive(rotation, speed);
+    drive.arcadeDrive(speed, rotation);
     drive.feed();
   }
   

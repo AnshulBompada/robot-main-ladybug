@@ -57,7 +57,9 @@ public class RobotContainer {
       drive
     ));
 
-    arm.setDefaultCommand(new HoldArmCommand(arm, arm.lastSetpoint = arm.getPosition().getDegrees()));
+    arm.setDefaultCommand(new HoldArmCommand(arm, 
+    () -> arm.getPosition().getDegrees()
+    ));
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
     autonChooser.addOption("SCORE MOBILITY, CABLE SIDE", autonManager.autonomousCmd(1));
@@ -79,12 +81,16 @@ public class RobotContainer {
       .onFalse(new InstantCommand(() -> {arm.armSpeed(0);}));
 
     operatorController.leftBumper()
-      .whileTrue(new HoldArmCommand(arm, ArmConstants.FLOOR_POS))
-      .onFalse(new HoldArmCommand(arm, ArmConstants.IDLE_POS));
+      .whileTrue(new HoldArmCommand(arm, 
+      () -> ArmConstants.FLOOR_POS))
+      .onFalse(new HoldArmCommand(arm, 
+      () -> ArmConstants.IDLE_POS));
    
     operatorController.rightBumper()
-      .whileTrue(new HoldArmCommand(arm, ArmConstants.FLOOR_POS))
-      .onFalse(new HoldArmCommand(arm, ArmConstants.IDLE_POS));
+      .whileTrue(new HoldArmCommand(arm, 
+      () -> ArmConstants.FLOOR_POS))
+      .onFalse(new HoldArmCommand(arm, 
+      () -> ArmConstants.IDLE_POS));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));
