@@ -41,16 +41,16 @@ public class Arm extends SubsystemBase {
     }
 
     // Setting soft limit
-    public void armSpeed(double speed) {
-        if (isInBound(speed)) leftArmMotor.set(speed);
-        else leftArmMotor.set(0);
-        
+    public void armSpeedVolt(double volts) {
+        if (isInBound(volts)) leftArmMotor.setVoltage(volts);
+        else leftArmMotor.setVoltage(0);
+
         // System.out.println("Limits working-");
     }
 
-    public boolean isInBound(double speed){
-        if((getPosition().getDegrees() < ArmConstants.LOWER_BOUND) && (speed < 0)) return false;
-        if ((getPosition().getDegrees() > ArmConstants.UPPER_BOUND) && (speed > 0)) return false;
+    public boolean isInBound(double volts){
+        if((getPosition().getDegrees() < ArmConstants.LOWER_BOUND) && (volts < 0)) return false;
+        if ((getPosition().getDegrees() > ArmConstants.UPPER_BOUND) && (volts > 0)) return false;
         return true;
     }
 
@@ -62,6 +62,14 @@ public class Arm extends SubsystemBase {
         return new Rotation2d(Units.rotationsPerMinuteToRadiansPerSecond(leftArmMotor.getEncoder().getVelocity()));
     }
     
+    public double getLastSetpoint() {
+        return lastSetpoint;
+    }
+
+    public void setLastSetpoint(double setpoint) {
+        lastSetpoint = setpoint;
+    }
+
     // public double getXAxisPosition() {
     //     return ArmConstants.To360Scope(getPosition());
     // }

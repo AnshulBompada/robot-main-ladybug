@@ -58,7 +58,7 @@ public class RobotContainer {
     ));
 
     arm.setDefaultCommand(new HoldArmCommand(arm, 
-    () -> arm.getPosition().getDegrees()
+      () -> arm.getLastSetpoint()
     ));
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
@@ -73,24 +73,24 @@ public class RobotContainer {
   
   private void configureBindings() {
     operatorController.leftTrigger()
-      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_FWD);}))
-      .onFalse(new InstantCommand(() -> { arm.armSpeed(0);}));
+      .whileTrue(new InstantCommand(() -> {arm.armSpeedVolt(ArmConstants.ARM_VOLT_FWD);}, arm))
+      .onFalse(new InstantCommand(() -> {arm.armSpeedVolt(0); arm.setLastSetpoint(arm.getPosition().getDegrees());}, arm));
 
     operatorController.rightTrigger()
-      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_BWD);}))
-      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);}));
+      .whileTrue(new InstantCommand(() -> {arm.armSpeedVolt(ArmConstants.ARM_VOLT_BWD);}, arm))
+      .onFalse(new InstantCommand(() -> {arm.armSpeedVolt(0); arm.setLastSetpoint(arm.getPosition().getDegrees());}, arm));
 
     operatorController.leftBumper()
       .whileTrue(new HoldArmCommand(arm, 
-      () -> ArmConstants.FLOOR_POS))
+        () -> ArmConstants.FLOOR_POS))
       .onFalse(new HoldArmCommand(arm, 
-      () -> ArmConstants.IDLE_POS));
+        () -> ArmConstants.IDLE_POS));
    
     operatorController.rightBumper()
       .whileTrue(new HoldArmCommand(arm, 
-      () -> ArmConstants.FLOOR_POS))
+        () -> ArmConstants.FLOOR_POS))
       .onFalse(new HoldArmCommand(arm, 
-      () -> ArmConstants.IDLE_POS));
+        () -> ArmConstants.IDLE_POS));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));

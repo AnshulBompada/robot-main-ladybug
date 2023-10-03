@@ -23,13 +23,6 @@ public class HoldArmCommand extends CommandBase {
     private ArmFeedforward FF;
     private ProfiledPIDController PID;
     private DoubleSupplier setpoint;
-    private double kS;
-    private double kG;
-    private double kV;
-    private double kA;
-    private double kP;
-    private double kI;
-    private double kD;
 
     public HoldArmCommand(Arm robotArm, DoubleSupplier setpoint) {
         this.robotArm = robotArm;
@@ -39,16 +32,9 @@ public class HoldArmCommand extends CommandBase {
 
     @Override
     public void initialize() {
-      kS = 0;
-      kG = -0.075;
-      kV = 0;
-      kA = 0;
-      kP = 0.025;
-      kI = 0;
-      kD = 0;
 
-      FF = new ArmFeedforward(kS, kG, kV, kA);
-      PID = new ProfiledPIDController(kP, kI, kD, new TrapezoidProfile.Constraints(ArmConstants.ARM_VELOCITY, ArmConstants.ARM_ACCELERATION));
+      FF = new ArmFeedforward(ArmConstants.kS, ArmConstants.kG, ArmConstants.kV, ArmConstants.kA);
+      PID = new ProfiledPIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD, new TrapezoidProfile.Constraints(ArmConstants.ARM_VELOCITY, ArmConstants.ARM_ACCELERATION));
       
       PID.setTolerance(ArmConstants.SET_TOLERANCE);
       PID.reset(robotArm.getPosition().getDegrees());
@@ -64,15 +50,15 @@ public class HoldArmCommand extends CommandBase {
 
         double calc = FF.calculate(
           Math.toRadians(robotArm.getPosition().getDegrees() - ArmConstants.ARM_PARALLEL_TO_GROUND),
-          robotArm.getVelocity().getRadians() / 12
+          robotArm.getVelocity().getRadians()
         );
 
-        robotArm.armSpeed(calc + PIDCalc); 
+        robotArm.armSpeedVolt(calc + PIDCalc); 
     }
   
     @Override
     public void end(boolean interrupted) {
-      robotArm.armSpeed(0);
+      robotArm.armSpeedVolt(0);
       System.out.println("Command HOLD ARM COMMAND has ended");
     }
   
