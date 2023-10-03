@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,6 +38,7 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void configureMotors(CANSparkMax motor){
+    motor.setIdleMode(IdleMode.kBrake);
     motor.setSmartCurrentLimit(DriveConstants.DRIVE_CURRENT_LIMIT);
     //motor.burnFlash();
     //motor.clearFaults();

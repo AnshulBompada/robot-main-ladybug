@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.ArmPID;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.HoldArmCommand;
 import frc.robot.subsystems.Drivebase;
@@ -48,8 +48,8 @@ public class RobotContainer {
     autonManager = new AutonManager(drive, arm, intake);
     autonChooser = new SendableChooser<>();
     
-    driveController = new CommandXboxController(0);
-    operatorController = new CommandXboxController(1);
+    driveController = new CommandXboxController(ControllerConstants.DRIVE_CONTROL_PORT);
+    operatorController = new CommandXboxController(ControllerConstants.OPERATOR_CONTROL_PORT);
 
     drive.setDefaultCommand(new DefaultDrive(
       () -> driveController.getLeftY(),
@@ -57,7 +57,7 @@ public class RobotContainer {
       drive
     ));
 
-    arm.setDefaultCommand(new HoldArmCommand(arm));
+    arm.setDefaultCommand(new HoldArmCommand(arm, arm.lastSetpoint = arm.getPosition().getDegrees()));
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
     autonChooser.addOption("SCORE MOBILITY, CABLE SIDE", autonManager.autonomousCmd(1));
@@ -71,20 +71,20 @@ public class RobotContainer {
   
   private void configureBindings() {
     operatorController.leftTrigger()
-      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_FWD); arm.getDefaultCommand().end(true);}))
-      .onFalse(new InstantCommand(() -> { arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
+      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_FWD);}))
+      .onFalse(new InstantCommand(() -> { arm.armSpeed(0);}));
 
     operatorController.rightTrigger()
-      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_BWD); arm.getDefaultCommand().end(true);}))
-      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
+      .whileTrue(new InstantCommand(() -> {arm.armSpeed(ArmConstants.ARM_SPEED_BWD);}))
+      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);}));
 
     operatorController.leftBumper()
-      .whileTrue(new ArmPID(arm, ArmConstants.FLOOR_POS))
-      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
+      .whileTrue(new HoldArmCommand(arm, ArmConstants.FLOOR_POS))
+      .onFalse(new HoldArmCommand(arm, ArmConstants.IDLE_POS));
    
     operatorController.rightBumper()
-      .whileTrue(new ArmPID(arm, ArmConstants.IDLE_POS))
-      .onFalse(new InstantCommand(() -> {arm.armSpeed(0);/* arm.lastSetpoint = arm.getPosition(); */}));
+      .whileTrue(new HoldArmCommand(arm, ArmConstants.FLOOR_POS))
+      .onFalse(new HoldArmCommand(arm, ArmConstants.IDLE_POS));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));
