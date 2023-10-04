@@ -73,24 +73,29 @@ public class RobotContainer {
   
   private void configureBindings() {
     operatorController.leftTrigger()
-      .whileTrue(new InstantCommand(() -> {arm.armSpeedVolt(ArmConstants.ARM_VOLT_FWD);}, arm))
-      .onFalse(new InstantCommand(() -> {arm.armSpeedVolt(0); arm.setLastSetpoint(arm.getPosition().getDegrees());}, arm));
+      .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
+      .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_FWD)))
+      .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
+      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
 
     operatorController.rightTrigger()
-      .whileTrue(new InstantCommand(() -> {arm.armSpeedVolt(ArmConstants.ARM_VOLT_BWD);}, arm))
-      .onFalse(new InstantCommand(() -> {arm.armSpeedVolt(0); arm.setLastSetpoint(arm.getPosition().getDegrees());}, arm));
+      .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
+      .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_BWD)))
+      .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
+      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
 
     operatorController.leftBumper()
-      .whileTrue(new HoldArmCommand(arm, 
-        () -> ArmConstants.FLOOR_POS))
-      .onFalse(new HoldArmCommand(arm, 
-        () -> ArmConstants.IDLE_POS));
+      .onTrue(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS)))
+      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.IDLE_POS)));
+      // .onTrue(new HoldArmCommand(arm, 
+      //   () -> ArmConstants.FLOOR_POS))
+      // .onFalse(new HoldArmCommand(arm, 
+      //   () -> ArmConstants.IDLE_POS));
+
    
     operatorController.rightBumper()
-      .whileTrue(new HoldArmCommand(arm, 
-        () -> ArmConstants.FLOOR_POS))
-      .onFalse(new HoldArmCommand(arm, 
-        () -> ArmConstants.IDLE_POS));
+    .onTrue(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS)))
+    .onFalse(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.IDLE_POS)));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
     operatorController.b().onTrue(new InstantCommand(() -> intake.cubeOut()));

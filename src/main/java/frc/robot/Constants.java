@@ -54,12 +54,12 @@ public final class Constants {
     public static final double ARM_GEAR_RATIO = 16.0;
     
 
-    public static final double kP = 0.025 * TOTAL_VOLT_OUTPUT;
+    public static final double kP = 0.023 * TOTAL_VOLT_OUTPUT;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
     public static final double kS = 0.1;
-    public static final double kG = -0.075 * TOTAL_VOLT_OUTPUT;
+    public static final double kG = 0.001 * TOTAL_VOLT_OUTPUT;
     public static final double kV = 0.0;
     public static final double kA = 0.0;
 
@@ -67,6 +67,8 @@ public final class Constants {
 
     // public static double To360Scope(double angle) {
     //   double val = angle + xAxisOffset;
+
+    
     //   if(val < 0) val += 360;
     //   return 360 - val;
     // }

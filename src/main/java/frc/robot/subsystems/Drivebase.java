@@ -31,7 +31,11 @@ public class Drivebase extends SubsystemBase {
   configureMotors(backLeft);
   configureMotors(backRight);
   
+  
+
   backLeft.follow(frontLeft, false);
+  frontLeft.setInverted(true);
+  backLeft.setInverted(true);
   backRight.follow(frontRight, false);
 
   drive = new DifferentialDrive(frontLeft, frontRight);

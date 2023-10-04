@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.Constants.ArmConstants;
 
+import java.util.function.BooleanSupplier;
 
 public class Arm extends SubsystemBase {
 
@@ -20,6 +22,8 @@ public class Arm extends SubsystemBase {
     private CANSparkMax rightArmMotor;
 
     public double lastSetpoint;
+
+    private boolean shouldPID = true;
 
     public Arm(){
         leftArmMotor = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
@@ -31,6 +35,14 @@ public class Arm extends SubsystemBase {
         configureMotors(rightArmMotor);
 
         lastSetpoint = getPosition().getDegrees();
+    }
+
+    public void setShouldPID(boolean val) {
+        shouldPID = val;
+    }
+
+    public boolean getShouldPID() {
+        return shouldPID;
     }
 
     public void configureMotors(CANSparkMax motor) {
@@ -68,6 +80,20 @@ public class Arm extends SubsystemBase {
 
     public void setLastSetpoint(double setpoint) {
         lastSetpoint = setpoint;
+    }
+
+    public void addLastSetpoint(double increment) {
+        lastSetpoint += increment;
+        lastSetpoint = MathUtil.clamp(lastSetpoint, 0, 110);
+    }
+
+    public void subLastSetpoint(double increment) {
+        lastSetpoint -= increment;
+        lastSetpoint = MathUtil.clamp(lastSetpoint, 0, 110);
+    }
+
+    public BooleanSupplier getManualRunCondition() {
+        return () -> !(getPosition().getDegrees() < 0 || getPosition().getDegrees() > 110);
     }
 
     // public double getXAxisPosition() {
