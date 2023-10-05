@@ -35,7 +35,7 @@ public class RobotContainer {
   private Arm arm;
   private AutonManager autonManager;
   private SendableChooser<Command> autonChooser;
-
+  private HoldArmCommand holdArmCmd;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -51,15 +51,15 @@ public class RobotContainer {
     driveController = new CommandXboxController(ControllerConstants.DRIVE_CONTROL_PORT);
     operatorController = new CommandXboxController(ControllerConstants.OPERATOR_CONTROL_PORT);
 
+    holdArmCmd = new HoldArmCommand(arm, () -> arm.getLastSetpoint() );
+
     drive.setDefaultCommand(new DefaultDrive(
       () -> driveController.getLeftY(),
       () -> driveController.getRightX(),
       drive
     ));
 
-    arm.setDefaultCommand(new HoldArmCommand(arm, 
-      () -> arm.getLastSetpoint()
-    ));
+    arm.setDefaultCommand(holdArmCmd);
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
     autonChooser.addOption("SCORE MOBILITY, CABLE SIDE", autonManager.autonomousCmd(1));
@@ -75,26 +75,28 @@ public class RobotContainer {
     operatorController.leftTrigger()
       .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
       .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_FWD)))
-      .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
-      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
+      .onFalse(new InstantCommand(() -> {
+          arm.setShouldPID(true); 
+          arm.setLastSetpoint(arm.getPosition().getDegrees()); }));
 
     operatorController.rightTrigger()
       .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
       .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_BWD)))
-      .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
-      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
+      .onFalse(new InstantCommand(() -> {
+        arm.setShouldPID(true); 
+        arm.setLastSetpoint(arm.getPosition().getDegrees()); }));
 
     operatorController.leftBumper()
-      .onTrue(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS)))
+      .onTrue(new InstantCommand(() -> {
+        holdArmCmd.resetPID();
+        arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS); }))
       .onFalse(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.IDLE_POS)));
-      // .onTrue(new HoldArmCommand(arm, 
-      //   () -> ArmConstants.FLOOR_POS))
-      // .onFalse(new HoldArmCommand(arm, 
-      //   () -> ArmConstants.IDLE_POS));
 
    
     operatorController.rightBumper()
-    .onTrue(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS)))
+    .onTrue(new InstantCommand(() -> {
+      holdArmCmd.resetPID();
+      arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS); }))
     .onFalse(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.IDLE_POS)));
 
     operatorController.a().onTrue(new InstantCommand(() -> intake.cubeIn()));
@@ -108,13 +110,7 @@ public class RobotContainer {
     return arm;
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return autonChooser.getSelected();
   }
 }

@@ -64,4 +64,8 @@ public class HoldArmCommand extends CommandBase {
     public boolean isFinished() {
       return false;
     }
+
+    public void resetPID() {
+      PID.reset(robotArm.getPosition().getDegrees());
+    }
   }
