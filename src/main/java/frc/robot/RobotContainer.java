@@ -72,7 +72,7 @@ public class RobotContainer {
 
   
   private void configureBindings() {
-    operatorController.leftTrigger()
+    /*operatorController.leftTrigger()
       .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
       .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_FWD)))
       .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
@@ -83,6 +83,7 @@ public class RobotContainer {
       .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_BWD)))
       .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
       .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
+      */
 
     operatorController.leftBumper()
       .onTrue(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS)))

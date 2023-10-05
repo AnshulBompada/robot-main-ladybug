@@ -5,6 +5,9 @@
         "open": true
       },
       "SmartDashboard": {
+        "Arm": {
+          "open": true
+        },
         "open": true
       }
     },
