@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -63,11 +64,15 @@ public class Drivebase extends SubsystemBase {
     drive.arcadeDrive(speed, rotation);
     drive.feed();
   }
-  
+
+  public void autoArcadeDrive (double speed, double rotation) {
+    drive.arcadeDrive(speed, rotation);
+    drive.feed();
+  }
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("TOP LEFT VELOCITY", frontLeft.getEncoder().getVelocity());
+    SmartDashboard.putNumber("TOP LEFT VELOCITY", frontLeft.get());
     //This method will be called once per scheduler run
   }
 }
