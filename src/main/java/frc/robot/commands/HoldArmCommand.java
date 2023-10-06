@@ -50,7 +50,7 @@ public class HoldArmCommand extends CommandBase {
           robotArm.getVelocity().getRadians()
         );
 
-        if(robotArm.getShouldPID()) robotArm.armSpeedVolt(calc + PIDCalc);
+        robotArm.armSpeedVolt(calc + PIDCalc);
         SmartDashboard.putNumber("Arm/Goal", PID.getGoal().position); 
     }
   

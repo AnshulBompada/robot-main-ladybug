@@ -75,22 +75,16 @@ public class RobotContainer {
     operatorController.leftTrigger()
       .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
       .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_FWD)))
-      .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
-      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
+      .onFalse(new InstantCommand(() -> {arm.setShouldPID(true); arm.setLastSetpoint(arm.getPosition().getDegrees());}));
 
     operatorController.rightTrigger()
       .onTrue(new InstantCommand(() -> arm.setShouldPID(false)))
       .whileTrue(new InstantCommand(() -> arm.armSpeedVolt(ArmConstants.ARM_VOLT_BWD)))
-      .onFalse(new InstantCommand(() -> arm.setShouldPID(true)))
-      .onFalse(new InstantCommand(() -> arm.setLastSetpoint(arm.getPosition().getDegrees()) ));
+      .onFalse(new InstantCommand(() -> {arm.setShouldPID(true); arm.setLastSetpoint(arm.getPosition().getDegrees());}));
 
     operatorController.leftBumper()
       .onTrue(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.FLOOR_POS)))
       .onFalse(new InstantCommand(() -> arm.setLastSetpoint(Constants.ArmConstants.IDLE_POS)));
-      // .onTrue(new HoldArmCommand(arm, 
-      //   () -> ArmConstants.FLOOR_POS))
-      // .onFalse(new HoldArmCommand(arm, 
-      //   () -> ArmConstants.IDLE_POS));
 
    
     operatorController.rightBumper()

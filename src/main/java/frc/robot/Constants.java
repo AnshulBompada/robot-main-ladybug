@@ -59,7 +59,7 @@ public final class Constants {
     public static final double kD = 0.0;
 
     public static final double kS = 0.1;
-    public static final double kG = 0.001 * TOTAL_VOLT_OUTPUT;
+    public static final double kG = -0.002 * TOTAL_VOLT_OUTPUT;
     public static final double kV = 0.0;
     public static final double kA = 0.0;
 
