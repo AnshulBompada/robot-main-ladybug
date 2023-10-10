@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends SubsystemBase {
   
@@ -41,7 +42,7 @@ public class Intake extends SubsystemBase {
   
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Intake Voltage", intakeMotor.get());
+
+    SmartDashboard.putNumber("Intake Amps", intakeMotor.getOutputCurrent());
   }
 }

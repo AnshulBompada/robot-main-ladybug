@@ -56,13 +56,13 @@ public class AutonManager {
             case 3:
             return new SequentialCommandGroup (
               // ARM PLACE 
-              armToPosition(AutonConstants.AUTON_SCORE_POS),
+              armToPosition(Constants.ArmConstants.IDLE_POS),
               cubeOut(),
               new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
               armToPosition(AutonConstants.AUTON_IDLE_POS),
 
               // DRIVE BACK
-              driveBack(1.3)
+              driveBack(3.0)
             );
 
             // ------ JUST SHOOT ------
