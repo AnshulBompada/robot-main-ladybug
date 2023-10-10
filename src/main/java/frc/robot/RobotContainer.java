@@ -6,11 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.AutoEngage;
+import frc.robot.commands.AutonCommand;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.HoldArmCommand;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.Arm;
+
+import com.ctre.phoenix.sensors.Pigeon2;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +41,7 @@ public class RobotContainer {
   private Arm arm;
   private AutonManager autonManager;
   private SendableChooser<Command> autonChooser;
+  private Pigeon pigeon;
 
 
 
@@ -60,6 +67,8 @@ public class RobotContainer {
     arm.setDefaultCommand(new HoldArmCommand(arm, 
       () -> arm.getLastSetpoint()
     ));
+
+    pigeon = new Pigeon();
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
     autonChooser.addOption("SCORE MOBILITY, CABLE SIDE", autonManager.autonomousCmd(1));
@@ -97,6 +106,10 @@ public class RobotContainer {
 
     operatorController.a().onFalse(new InstantCommand(() -> intake.setZero()));
     operatorController.b().onFalse(new InstantCommand(() -> intake.setZero()));
+
+    // operatorController.y()
+    //   .whileTrue(new AutoEngage(drive, pigeon));
+      //.onFalse(new InstantCommand(() -> {drive.arcadeDrive(0, 0);}, drive));
   }
 
   public Arm getRobotArm(){
