@@ -51,8 +51,9 @@ public class RobotContainer {
     intake = new Intake();
     arm = new Arm();
     drive = new Drivebase();
-    
-    autonManager = new AutonManager(drive, arm, intake);
+    pigeon = new Pigeon();
+
+    autonManager = new AutonManager(drive, arm, intake, pigeon);
     autonChooser = new SendableChooser<>();
     
     driveController = new CommandXboxController(ControllerConstants.DRIVE_CONTROL_PORT);
@@ -67,8 +68,6 @@ public class RobotContainer {
     arm.setDefaultCommand(new HoldArmCommand(arm, 
       () -> arm.getLastSetpoint()
     ));
-
-    pigeon = new Pigeon();
     
     Shuffleboard.getTab("Autonomous: ").add(autonChooser);
     autonChooser.addOption("SCORE MOBILITY, CABLE SIDE", autonManager.autonomousCmd(1));
@@ -108,8 +107,8 @@ public class RobotContainer {
     operatorController.b().onFalse(new InstantCommand(() -> intake.setZero()));
 
     operatorController.y()
-      .whileTrue(new AutonCommand(drive, pigeon))
-      .onFalse(new InstantCommand(() -> {drive.arcadeDrive(0, 0);}, drive));
+      .onTrue(autonManager.autonomousCmd(2));
+      //.onFalse(new InstantCommand(() -> {drive.arcadeDrive(0, 0);}, drive));
 
     // operatorController.y()
     //   .whileTrue(new AutoEngage(drive, pigeon));

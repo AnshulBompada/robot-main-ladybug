@@ -13,13 +13,11 @@ public class Pigeon extends SubsystemBase {
   /** Creates a new Pigeon. */
   private Pigeon2 pigeon;
 
-  private double yaw = 0;
-  private double pitch = 0;
-  private double roll = 0;
+  private double offsetPitch;
 
   public Pigeon() {
     pigeon = new Pigeon2(41);
-
+    offsetPitch = pigeon.getPitch();
   }
 
   private Pigeon2 getPigeon() {
@@ -27,22 +25,22 @@ public class Pigeon extends SubsystemBase {
   }
 
   public double getPitch() {
-    return pigeon.getPitch();
+    return pigeon.getPitch() - offsetPitch;
   }
 
-  private double getYaw() {
+  public double getYaw() {
     return pigeon.getYaw();
   }
 
-  private double getRoll() {
+  public double getRoll() {
     return pigeon.getRoll();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Yaw", pigeon.getYaw());
-    SmartDashboard.putNumber("Roll", pigeon.getRoll());
-    SmartDashboard.putNumber("Pitch", pigeon.getPitch());
+    SmartDashboard.putNumber("Yaw", getYaw());
+    SmartDashboard.putNumber("Roll", getRoll());
+    SmartDashboard.putNumber("Pitch", getPitch());
   }
 }

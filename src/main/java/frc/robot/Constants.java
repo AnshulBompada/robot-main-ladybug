@@ -76,13 +76,18 @@ public final class Constants {
 
   public static class AutonConstants{
     public static final int GYRO_ID = 41;
-    public static final double AUTON_ARM_SPEED_FWD = 0.5;
+    public static final double AUTON_ARM_SPEED_FWD = -0.5;
     public static final double AUTON_ARM_SPEED_BWD = 0.5;
     public static final double AUTON_OUT_TAKE_WAIT = 1;
     public static final double AUTON_SCORE_POS = 100;
     public static final double AUTON_IDLE_POS = 0;
     public static final double GYRO_GOAL_POS = 0.0;
-    public static final double GYRO_TOLERANCE = 5.0;
-    public static final double AUTON_DRIVE_SPEED = 0.2;
+    public static final double GYRO_TOLERANCE_HIGH = 11.0;
+    public static final double GYRO_TOLERANCE_LOW = 7.0;
+    public static final double AUTON_DRIVE_SPEED_HIGH = 0.35;
+    public static final double AUTON_DRIVE_SPEED_LOW = 0.25;
   }
 }
+
+
+

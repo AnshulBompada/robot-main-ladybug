@@ -15,6 +15,7 @@ public class AutonCommand extends CommandBase {
   private Pigeon gyro;
   private Drivebase drive;
   private double direction;
+  private boolean init;
 
   public AutonCommand(Drivebase drive, Pigeon gyro) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,18 +27,19 @@ public class AutonCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Pitch", gyro.getPitch());
-    SmartDashboard.putNumber("Direction", direction);
+    //SmartDashboard.putNumber("Pitch", gyro.getPitch());
+    if(gyro.getPitch() > 0) direction = -1.0;
+    else direction = 1.0;
 
-    if(gyro.getPitch() > 0) direction = 1.0;
-    else direction = -1.0;
-
-    if(Math.abs(gyro.getPitch()) > AutonConstants.GYRO_TOLERANCE) drive.autoArcadeDrive(direction * AutonConstants.AUTON_DRIVE_SPEED, 0);
+    if(Math.abs(gyro.getPitch()) > AutonConstants.GYRO_TOLERANCE_HIGH) drive.autoArcadeDrive(direction * AutonConstants.AUTON_DRIVE_SPEED_HIGH, 0);
+    else if(Math.abs(gyro.getPitch()) > AutonConstants.GYRO_TOLERANCE_LOW) drive.autoArcadeDrive(direction * AutonConstants.AUTON_DRIVE_SPEED_LOW, 0);
   }
 
   // Called once the command ends or is interrupted.

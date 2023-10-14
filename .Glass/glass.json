@@ -1,20 +1,12 @@
 {
   "NetworkTables": {
-    "Persistent Values": {
-      "open": false
-    },
     "transitory": {
       "Shuffleboard": {
-        ".metadata": {
-          "open": true
-        },
         "Autonomous: ": {
           "SendableChooser[0]": {
             "open": true
-          },
-          "open": true
-        },
-        "open": true
+          }
+        }
       },
       "SmartDashboard": {
         "Arm": {

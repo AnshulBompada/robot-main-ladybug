@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutonCommand;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.HoldArmCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.Constants.AutonConstants;
 
 public class AutonManager {
@@ -16,11 +18,13 @@ public class AutonManager {
     public Drivebase robotDrive;
     public Arm robotArm;
     public Intake robotIntake;
+    public Pigeon gyro;
     
-    public AutonManager(Drivebase robotDrive, Arm robotArm, Intake robotIntake) {
+    public AutonManager(Drivebase robotDrive, Arm robotArm, Intake robotIntake, Pigeon gyro) {
         this.robotDrive = robotDrive;
         this.robotArm = robotArm;
         this.robotIntake = robotIntake;
+        this.gyro = gyro;
     }
 
     public Command autonomousCmd(int auton) {
@@ -42,14 +46,11 @@ public class AutonManager {
             // ------ MID AUTON ------
             case 2:
               return new SequentialCommandGroup (
-                // ARM PLACE 
-                armToPosition(AutonConstants.AUTON_SCORE_POS),
                 cubeOut(),
                 new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
-                armToPosition(AutonConstants.AUTON_IDLE_POS),
-
-                // DRIVE BACK
-                driveBack(1.3)
+                driveBack(4),
+                driveFront(1.5),
+                autoBalance()
               );
 
             // ------ NON-CABLE SIDE AUTON ------
@@ -59,6 +60,7 @@ public class AutonManager {
               armToPosition(Constants.ArmConstants.IDLE_POS),
               cubeOut(),
               new WaitCommand(AutonConstants.AUTON_OUT_TAKE_WAIT),
+              cubeStop(),
               armToPosition(AutonConstants.AUTON_IDLE_POS),
 
               // DRIVE BACK
@@ -107,5 +109,13 @@ public class AutonManager {
   // not used until 2-pc/1&1/2pc auton is created
   private Command cubeInConeOut(){
     return new InstantCommand(()-> robotIntake.cubeIn());
+  }
+
+  private Command cubeStop() {
+    return new InstantCommand(() -> robotIntake.setZero());
+  }
+
+  private Command autoBalance() {
+    return new AutonCommand(robotDrive, gyro).withTimeout(10);
   }
 }
