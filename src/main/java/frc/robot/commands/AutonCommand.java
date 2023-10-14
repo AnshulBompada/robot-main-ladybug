@@ -4,42 +4,24 @@
 
 package frc.robot.commands;
 
-import com.fasterxml.jackson.databind.ser.std.NullSerializer;
-
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Pigeon;
 
-public class AutonCommand extends ProfiledPIDCommand {
-  /* Creates a new AutonCommand. */
-  
+public class AutonCommand extends CommandBase {
+  /** Creates a new AutonCommand. */
+  private Pigeon gyro;
   private Drivebase drive;
-  private Pigeon pigeon;
+  private double direction;
 
-  public AutonCommand(Drivebase drive, Pigeon pigeon) {
-    super(
-      new ProfiledPIDController(
-        0.01, 
-        0, 
-        0, 
-        new TrapezoidProfile.Constraints(1.5, 1)),
-        () -> pigeon.getPitch(), 
-        AutonConstants.GYRO_GOAL_POS, 
-        (output, setpoint) -> { 
-          SmartDashboard.getNumber("output", output);
-          System.out.println(output);
-          drive.autoArcadeDrive(output, 0);}, 
-        drive
-      );
-
+  public AutonCommand(Drivebase drive, Pigeon gyro) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.gyro = gyro;
+    this.drive = drive;
+    direction = 1.0;
     addRequirements(drive);
-    getController().setTolerance(2.5);
   }
 
   // Called when the command is initially scheduled.
@@ -48,7 +30,15 @@ public class AutonCommand extends ProfiledPIDCommand {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    SmartDashboard.putNumber("Pitch", gyro.getPitch());
+    SmartDashboard.putNumber("Direction", direction);
+
+    if(gyro.getPitch() > 0) direction = 1.0;
+    else direction = -1.0;
+
+    if(Math.abs(gyro.getPitch()) > AutonConstants.GYRO_TOLERANCE) drive.autoArcadeDrive(direction * AutonConstants.AUTON_DRIVE_SPEED, 0);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

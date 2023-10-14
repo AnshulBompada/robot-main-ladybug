@@ -82,5 +82,7 @@ public final class Constants {
     public static final double AUTON_SCORE_POS = 100;
     public static final double AUTON_IDLE_POS = 0;
     public static final double GYRO_GOAL_POS = 0.0;
+    public static final double GYRO_TOLERANCE = 5.0;
+    public static final double AUTON_DRIVE_SPEED = 0.2;
   }
 }

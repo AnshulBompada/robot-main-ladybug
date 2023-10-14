@@ -107,6 +107,10 @@ public class RobotContainer {
     operatorController.a().onFalse(new InstantCommand(() -> intake.setZero()));
     operatorController.b().onFalse(new InstantCommand(() -> intake.setZero()));
 
+    operatorController.y()
+      .whileTrue(new AutonCommand(drive, pigeon))
+      .onFalse(new InstantCommand(() -> {drive.arcadeDrive(0, 0);}, drive));
+
     // operatorController.y()
     //   .whileTrue(new AutoEngage(drive, pigeon));
       //.onFalse(new InstantCommand(() -> {drive.arcadeDrive(0, 0);}, drive));

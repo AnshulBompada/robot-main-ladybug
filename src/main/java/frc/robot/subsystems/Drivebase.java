@@ -72,7 +72,10 @@ public class Drivebase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("TOP LEFT VELOCITY", frontLeft.get());
+    SmartDashboard.putNumber("FL Velocity", frontLeft.get());
+    SmartDashboard.putNumber("FR Velocity", frontRight.get());
+    SmartDashboard.putNumber("BL Velocity", backLeft.get());
+    SmartDashboard.putNumber("BR Velocity", backRight.get());
     //This method will be called once per scheduler run
   }
 }
